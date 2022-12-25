@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  web:
+    image: nginx:1.23.2-alpine
+    volumes:
+      - .docker/nginx/:/etc/nginx/conf.d/
+      - ./src/public:/var/www/data/public
+    ports:
+      - 8080:80
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build: .
+    volumes:
+      - ./src:/var/www/data
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0-debian
+    volumes:
+      - .docker/data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=quangnm  
+      - MYSQL_PASSWORD=quangnm
+      - MYSQL_DATABASE=shop_app
+

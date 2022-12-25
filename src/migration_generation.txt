@@ -1,0 +1,17 @@
+php artisan make:migration:schema create_users_table --schema="email:string:unique, username:string, password:string, first_name:string, last_name:string" --model=true
+php artisan make:migration:schema create_user_address_table --schema="address_line1:string, address_line2:string, postal_code:string, city:string, country:string, phone:string, user_id:unsignedBigInteger" --model=true
+php artisan make:migration:schema create_orders_table --schema="status:string, total_discount:decimal, shopping_session_id:unsignedBigInteger, user_address_id:unsignedBigInteger" --model=true
+php artisan make:migration:schema create_shopping_sessions_table --schema="user_id:unsignedBigInteger, total:decimal, valid:boolean" --model=true
+
+php artisan make:migration:schema create_discounts_table --schema="name:string, desc:string, discount_percentage:decimal, active:boolean" --model=true
+php artisan make:migration:schema create_categories_table --schema="name:string, desc:string, image_url:string" --model=true
+php artisan make:migration:schema create_cart_items_table --schema="shopping_session_id:unsignedBigInteger, product_id:unsignedBigInteger, quantity:unsignedBigInteger" --model=true
+php artisan make:migration:schema create_products_table --schema="name:string, desc:string, image_url:string, sku:string, price:decimal, quantity:unsignedBigInteger, discount_id:unsignedBigInteger, category_id:unsignedBigInteger" --model=true
+
+php artisan make:migration:schema create_user_table --schema=""
+php artisan make:migration:schema create_user_table --schema=""
+php artisan make:migration:schema create_user_table --schema=""
+php artisan make:migration:schema create_user_table --schema=""
+php artisan make:migration:schema create_user_table --schema=""
+php artisan make:migration:schema create_user_table --schema=""
+
