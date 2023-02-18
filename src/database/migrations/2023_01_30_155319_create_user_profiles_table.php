@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateShoppingSessionsTable extends Migration
+class CreateUserProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +13,11 @@ class CreateShoppingSessionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shopping_sessions', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->decimal('total');
-            $table->boolean('valid');
+            $table->string('full_name');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateShoppingSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shopping_sessions');
+        Schema::dropIfExists('user_profiles');
     }
 }

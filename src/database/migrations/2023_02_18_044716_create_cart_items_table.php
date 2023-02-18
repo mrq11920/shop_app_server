@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCartItemsTable extends Migration
 {
@@ -13,10 +14,11 @@ class CreateCartItemsTable extends Migration
     public function up()
     {
         Schema::create('cart_items', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('shopping_session_id');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('quantity');
+            $table->unsignedInteger('quantity');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
