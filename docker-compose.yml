@@ -20,6 +20,8 @@ services:
 
   db:
     image: mysql:8.0-debian
+    ports:
+      - "3309:3306"
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - .docker/data/mysql:/var/lib/mysql
