@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('province_id');
             $table->tinyInteger('status')->default(0)->comment('0: pending, 1: success, -1: declined');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Province;
+use App\Models\SmallCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,53 +16,58 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        // php artisan make:migration:schema create_products_table --schema="name:string, desc:string, image_url:string, 
-        // sku:string, price:decimal, quantity:unsignedBigInteger, discount_id:unsignedBigInteger, category_id:unsignedBigInteger" --model=true
-        DB::table('products')->insert([
-            [
-                'id' => 1,
-                'name' => 'Ca chua',
-                'desc' => 'Muong dang la mot loai hoa qua rat tot cho suc khoe dac biet tot voi nhung nguoi bi benh cao huyet ap',
-                'image_url' => 'https://vidas.vn/static/media/images/save_tem/s200_200/c%C3%A0%20chua.jpg',
-                'sku' => '',
-                'price' => 90000,
-                'unit_type' => '250 Gram',
-                'quantity' => 100,
-                'category_id' => 1
-            ],
-            [
-                'id' => 2,
-                'name' => 'Chim tri thit nguyen con',
-                'desc' => 'La chim quy, Tien vua, ho cung Cong, chim Phuong',
-                'image_url' => 'https://vidas.vn/static/media/images/shop/chim-tri-do-1584953276.jpg',
-                'sku' => '',
-                'price' => 249000,
-                'unit_type' => 'Kg',
-                'quantity' => 50,
-                'category_id' => 2
-            ],
-            [
-                'id' => 3,
-                'name' => 'Thit nhan tao gia nam',
-                'desc' => 'Thanh phan: bot dau nanh, gluten lua mi, phan lap protein dau nanh',
-                'image_url' => 'https://vidas.vn/static/media/images/save_tem/20220912_090539-compressed.jpg',
-                'sku' => '',
-                'price' => 200000,
-                'unit_type' => 'Goi',
-                'quantity' => 50,
-                'category_id' => 3
-            ],
-            [
-                'id' => 4,
-                'name' => 'Thit lon dong hop',
-                'desc' => 'Thanh phan: bot dau nanh, gluten lua mi, phan lap protein dau nanh',
-                'image_url' => 'https://vidas.vn/static/media/images/save_tem/20220912_090539-compressed.jpg',
-                'sku' => '',
-                'price' => 120000,
-                'unit_type' => 'Hop',
-                'quantity' => 50,
-                'category_id' => 4,
-            ],
-        ]);
+        // get all categories
+        $smallCategories = SmallCategory::all(['id', 'name']);
+        $mapCategories = [];
+        foreach ($smallCategories as $category) {
+            $mapCategories[strtolower($category->name)] = $category->id;
+        }
+        // get all provinces
+        $provinceMap = [];
+        foreach (Province::all(['id', 'name',]) as $province) {
+            $provinceMap[strtolower($province->name)] = $province->id;
+        }
+        $csvData = fopen(base_path('database/data/products.csv'), 'r');
+        $row = true;
+
+        while (($data = fgetcsv($csvData, null, ',')) !== false) {
+            if (!$row) {
+                $splitedAddress = explode('-', $data[7]);
+                DB::table('products')->updateOrInsert(
+                    [
+                        'id' => $data[0],
+                    ],
+                    [
+                        'id' => $data[0],
+                        'merchant_id' => $data[10],
+                        'name' => $data[1],
+                        'description' => $data[8],
+                        'price' => $data[3],
+                        'category_id' => $mapCategories[strtolower($data[2])],
+                        'unit_type' => $data[4],
+                        'quantity' => rand(5, 10),
+                        'province_id' => $provinceMap[strtolower(trim(end($splitedAddress)))],
+                        'status' => config('product.status.approved'),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+
+                $images = json_decode(str_replace('\'', '"', $data[12]));
+                if (!empty($images)) {
+                    foreach ($images as $image) {
+                        DB::table('images')->insert([
+                            'imageable_id' => $data[0],
+                            'imageable_type' => "App\Models\Product",
+                            'url' => $image->path,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
+            $row = false;
+        }
+        fclose($csvData);
     }
 }

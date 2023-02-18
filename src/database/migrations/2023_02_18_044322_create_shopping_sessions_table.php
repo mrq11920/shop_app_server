@@ -29,6 +29,6 @@ class CreateShoppingSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shopping_session');
+        Schema::dropIfExists('shopping_sessions');
     }
 }

@@ -35,4 +35,14 @@ class Product extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function merchant()
+    {
+        return $this->belongsTo(User::class, 'merchant_id', 'id');
+    }
 }

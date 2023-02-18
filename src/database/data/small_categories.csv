@@ -1,0 +1,92 @@
+id, name, large_category_id
+1, "Rau, củ, quả", 1
+2, "Các loại thịt", 2
+3, "Thủy - Hải sản", 3
+4, "Thực phẩm đóng hộp", 4
+5, "Gia vị thực phẩm", 5
+6, "Sữa, Mật - Sản phẩm từ Sữa,mật", 6
+7, "Đồ uống", 7
+8, "Trứng các loại",8
+9, "Thực phẩm chế biến sẵn",9
+10, "Cây giống - Con giống", 10
+11, "Nhà hàng - Quán ăn", 11
+12, "Thực phẩm bổ sung",12
+13, "Vật tư nông nghiệp", 13
+14, "Sản phẩm - dịch vụ khác",14
+15, "Dược liệu", 15
+100,"Hạt các loại",1
+101,"Rau củ quả khô",1
+102,"Rau ăn lá",1
+103,"Rau ăn củ",1
+104,"Rau ăn quả",1
+105,"Rau ăn thân",1
+106,"Rau gia vị",1
+107,"Trái cây tươi",1
+108,"Rau, củ, quả khác",1
+109,"Nấm các loại",1
+200,"Thịt gia cầm",2
+201,"Thịt gia súc",2
+202,"Thịt đông lạnh",2
+203,"Thịt xông khói",2
+204,"Thịt ướp gia vị",2
+205,"Thịt loại khác",2
+300,"Thủy - Hải sản đông lạnh",3
+301,"Thủy - Hải sản tươi sống",3
+302,"Thủy - Hải sản đóng hộp",3
+303,"Thủy - Hải sản khô",3
+304,"Thủy - Hải sản ăn liền",3
+305,"Sản phẩm từ Thực vật thủy sinh",3
+306,"Thủy - Hải sản khác",3
+400,"Dầu ăn",4
+401,"Trái cây đóng hộp",4
+402,"Rau, củ đóng hộp",4
+403,"Thực phẩm đóng hộp khác",4
+404,"Thịt đóng hộp",4
+500,"Gia vị chay",5
+501,"Nước mắm",5
+502,"Gia vị mặn",5
+503,"Gia vị ngọt",5
+504,"Gia vị đắng",5
+505,"Gia vị cay",5
+506,"Gia vị chua",5
+507,"Gia vị thơm",5
+508,"Gia vị khác",5
+600,"Mật ong",6
+601,"Các sản phẩm từ Mật ",6
+602,"Bánh sữa",6
+603,"Sữa nguyên chất",6
+604,"Phomat",6
+605,"Sữa hạt",6
+606,"Sữa bột",6
+607,"Sữa chua",6
+608,"Sản phẩm từ sữa khác",6
+700,"Đồ uống có cồn",7
+701,"Café- trà",7
+702,"Đồ uống nhanh",7
+703,"Đồ uống dinh dưỡng",7
+704,"Nước khoáng",7
+705,"Đồ uống loại khác",7
+900,"Thực phẩm chay",9
+901,"Chế biến từ thịt",9
+902,"Chế biến từ ngũ cốc",9
+903,"Chế biến ăn liền",9
+904,"Chế biến từ thủy sản - hải sản",9
+905,"Chế biến từ rau củ",9
+906,"Chế biến từ trứng",9
+907,"Chế biến chay",9
+908,"Chế biến từ trái cây",9
+909,"Thực phẩm chế biến sẵn khác",9
+1000,"Giống cây trồng",10
+1001,"Giống vật nuôi",10
+1200,"Thực phẩm chức năng",12
+1300,"Thức ăn chăn nuôi",13
+1301,"Thuốc thú y",13
+1302,"Thuốc bảo vệ thực vật",13
+1303,"Máy móc, phương tiện phục vụ sản xuất",13
+1304,"Máy chế biến nông sản thực phẩm",13
+1400,"Hoa - Cây cảnh",14
+1401,"Bao bì thực phẩm",14
+1402,"Chăm sóc cơ thể",14
+1403,"Chăm sóc gia đình",14
+1500,"Tinh dầu",15
+1501,"Sản phẩm chế biến từ Thảo dược",15
