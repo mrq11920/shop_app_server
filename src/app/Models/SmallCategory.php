@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShoppingSession extends Model
+class SmallCategory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'total',
-        'valid',
+        'name',
+        'large_category_id',
         'created_at',
         'updated_at',
     ];
