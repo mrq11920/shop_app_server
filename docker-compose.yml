@@ -3,8 +3,9 @@ services:
   web:
     image: nginx:1.23.2-alpine
     volumes:
-      - .docker/nginx/:/etc/nginx/conf.d/
-      - ./src/public:/var/www/data/public
+      - ".docker/nginx/:/etc/nginx/conf.d/"
+      - "./src/public:/var/www/data/public"
+      - "./src/storage/app/public:/var/www/data/storage/app/public"
     ports:
       - 8080:80
     depends_on:
@@ -19,11 +20,12 @@ services:
 
   db:
     image: mysql:8.0-debian
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - .docker/data/mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=quangnm  
+      - MYSQL_USER=quangnm
       - MYSQL_PASSWORD=quangnm
       - MYSQL_DATABASE=shop_app
 
