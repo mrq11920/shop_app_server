@@ -15,4 +15,14 @@ class SmallCategory extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function largeCategory()
+    {
+        return $this->belongsTo(LargeCategory::class, 'large_category_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
 }

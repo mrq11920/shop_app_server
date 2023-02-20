@@ -15,4 +15,9 @@ class LargeCategory extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function largeCategories()
+    {
+        return $this->hasMany(SmallCategory::class, 'large_category_id', 'id');
+    }
 }

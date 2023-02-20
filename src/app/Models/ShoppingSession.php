@@ -16,4 +16,19 @@ class ShoppingSession extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class, 'shopping_session_id', 'id');
+    }
+
+    public function order()
+    {
+        return $this->hasOne(Order::class, 'shopping_session_id', 'id');
+    }
 }

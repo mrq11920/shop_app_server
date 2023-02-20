@@ -18,13 +18,13 @@ class Order extends Model
         'updated_at',
     ];
 
-    public function orderItems()
+    public function shoppingSession()
     {
-        return $this->hasMany(OrderItem::class, 'order_id', 'id');
+        return $this->belongsTo(ShoppingSession::class, 'shopping_session_id', 'id');
     }
 
-    public function paymentDetails()
+    public function userAddress()
     {
-        return $this->hasOne(PaymentDetail::class, 'order_id', 'id');
+        return $this->belongsTo(UserAddress::class, 'user_address_id', 'id');
     }
 }

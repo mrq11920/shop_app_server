@@ -17,4 +17,9 @@ class Discount extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'discount_id', 'id');
+    }
 }

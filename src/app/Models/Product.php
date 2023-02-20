@@ -28,7 +28,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(SmallCategory::class, 'category_id', 'id');
     }
 
     public function images() 
@@ -38,11 +38,16 @@ class Product extends Model
 
     public function province()
     {
-        return $this->belongsTo(Province::class);
+        return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 
     public function merchant()
     {
         return $this->belongsTo(User::class, 'merchant_id', 'id');
+    }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class, 'discount_id', 'id');
     }
 }

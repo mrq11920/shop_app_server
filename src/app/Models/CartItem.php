@@ -18,4 +18,14 @@ class CartItem extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function shoppingSession()
+    {
+        return $this->belongsTo(ShoppingSession::class, 'shopping_session_id', 'id');
+    }
 }

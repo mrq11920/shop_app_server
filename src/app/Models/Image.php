@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     use HasFactory;
+    protected $appends = array('url');
 
     protected $fillable = [
         'url',
@@ -18,5 +19,10 @@ class Image extends Model
     public function imageable()
     {
         return $this->morphTo();
+    }
+
+    public function getUrlAttribute($url)
+    {
+        return config('app.image_domain') .'/'. $url;
     }
 }

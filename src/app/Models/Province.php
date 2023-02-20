@@ -15,4 +15,14 @@ class Province extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'province_id', 'id');
+    }
+
+    public function userAddresses()
+    {
+        return $this->hasMany(UserAddress::class, 'user_address_id', 'id');
+    }
 }
