@@ -20,6 +20,7 @@ class CreateUserAddressesTable extends Migration
             $table->string('address');
             $table->string('phone_number');
             $table->unsignedBigInteger('province_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

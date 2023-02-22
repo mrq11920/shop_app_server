@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserAddress extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -15,6 +16,9 @@ class UserAddress extends Model
         'address',
         'phone_number',
         'province_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     public function province()

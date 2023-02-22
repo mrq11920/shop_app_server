@@ -55,7 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
-    'image_domain' => env('IMAGE_DOMAIN', 'aaa'),
+    'image_domain' => env('IMAGE_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------

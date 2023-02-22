@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->tinyInteger('status');
             $table->decimal('total_discount');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('shopping_session_id');
             $table->unsignedBigInteger('user_address_id');
             $table->timestamps();

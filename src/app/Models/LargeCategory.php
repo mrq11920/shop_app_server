@@ -16,7 +16,7 @@ class LargeCategory extends Model
         'updated_at',
     ];
 
-    public function largeCategories()
+    public function smallCategories()
     {
         return $this->hasMany(SmallCategory::class, 'large_category_id', 'id');
     }

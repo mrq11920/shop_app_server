@@ -9,8 +9,14 @@ class Order extends Model
 {
     use HasFactory;
 
+    const OPEN = 1;
+    const DELIVERING = 2;
+    const RECEIVED = 3;
+    const CANCELLED = 4;
+
     protected $fillable = [
         'status',
+        'user_id',
         'total_discount',
         'shopping_session_id',
         'user_address_id',
@@ -25,6 +31,11 @@ class Order extends Model
 
     public function userAddress()
     {
-        return $this->belongsTo(UserAddress::class, 'user_address_id', 'id');
+        return $this->belongsTo(UserAddress::class, 'user_address_id', 'id')->withTrashed();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
