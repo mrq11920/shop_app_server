@@ -18,7 +18,15 @@ class ProductController extends Controller
     {
         // GET: api/products?keyword=buoi&large_category[]=19&small_category[]=1&provice_id[]=1
         $query = Product::query();
-        $products = $query->get();
+        if ($request->has('large_category_id')) {
+            $query = $query->where('large_category_id', $request->large_category_id);
+        }
+        if($request->has('keyword')) {
+            $query = $query->where('name', 'like', '%'. $request->keyword. '%');
+        }
+        $query = $query->where('status', config('product.status.approved'))
+            ->orderBy('created_at', 'desc');
+        $products = $query->with(['images', 'province', 'smallCategory'])->paginate(4);
         return ProductResource::collection($products);
     }
 
@@ -41,7 +49,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return new ProductResource(Product::findOrFail($id));
+        return new ProductResource(Product::findOrFail($id)->load('images', 'province', 'smallCategory'));
     }
 
     /**

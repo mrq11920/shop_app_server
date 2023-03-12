@@ -19,11 +19,16 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'merchant_id' => $this->merchant_id,
             'images' => ImageResource::collection($this->whenLoaded('images')),
             'price' => $this->price,
             'unit_type' => $this->unit_type,
             'quantity' => $this->quantity,
-            'category' => new SmallCategoryResource($this->whenLoaded('category')),
+            'small_category_id' => $this->small_category_id,
+            'small_category' => new SmallCategoryResource($this->whenLoaded('smallCategory')),
+            'large_category_id' => $this->large_category_id,
+            'large_category' => new LargeCategoryResource($this->whenLoaded('largeCategory')),
+            'province_id' => $this->province_id,
             'province' => new ProvinceResource($this->whenLoaded('province')),
         ];
     }

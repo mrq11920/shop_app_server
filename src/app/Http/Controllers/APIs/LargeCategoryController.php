@@ -16,7 +16,7 @@ class LargeCategoryController extends Controller
      */
     public function index()
     {
-        $categories = LargeCategory::all();
+        $categories = LargeCategory::all()->sortBy('icon', SORT_REGULAR, true);
         return LargeCategoryResource::collection($categories);
     }
 

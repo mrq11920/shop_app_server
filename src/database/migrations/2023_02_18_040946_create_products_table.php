@@ -22,8 +22,9 @@ class CreateProductsTable extends Migration
             $table->string('unit_type');
             $table->integer('quantity');
             $table->unsignedBigInteger('discount_id')->nullable();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('province_id');
+            $table->unsignedBigInteger('small_category_id')->nullable();
+            $table->unsignedBigInteger('large_category_id')->nullable();
+            $table->unsignedBigInteger('province_id')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0: pending, 1: success, -1: declined');
             $table->softDeletes();
             $table->timestamps();

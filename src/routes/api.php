@@ -3,10 +3,12 @@
 use App\Http\Controllers\APIs\AddressController;
 use App\Http\Controllers\APIs\AuthController;
 use App\Http\Controllers\APIs\CartController;
+use App\Http\Controllers\APIs\LargeCategoryController;
 use App\Http\Controllers\APIs\OrderController;
 use App\Http\Controllers\APIs\ProductController;
 use App\Http\Controllers\APIs\ProfileController;
 use App\Http\Controllers\APIs\ProvinceController;
+use App\Http\Controllers\APIs\SmallCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,4 +35,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('addresses', AddressController::class);
     Route::apiResource('profile', ProfileController::class);
+    Route::delete('/logout', [AuthController::class, 'logout']);
 });

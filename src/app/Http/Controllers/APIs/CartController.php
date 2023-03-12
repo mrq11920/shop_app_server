@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\UpdateCartItem;
 use App\Http\Resources\CartResource;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -31,7 +32,7 @@ class CartController extends Controller
             'total' => 0,
             'valid' => true,
         ]);
-        return new CartResource($cart->load('cartItems'));
+        return new CartResource($cart->load('cartItems', 'cartItems.product', 'cartItems.product.images'));
     }
 
     /**
@@ -82,12 +83,10 @@ class CartController extends Controller
     
             $total = $shoppingSession->total + $product->price * $productQuantity;
             // update shopping session
-            $shoppingSession->fill([
-                'total' => $total > 0 ? $total : 0,
-            ])->save();
+            $shoppingSession->fill(['total' => $total > 0 ? $total : 0])->save();
             DB::commit();
 
-            return new CartResource($shoppingSession->load('cartItems'));
+            return new CartResource($shoppingSession->load('cartItems','cartItems.product', 'cartItems.product.images'));
         } catch(Throwable $e) {
             throw $e;
         }
@@ -111,9 +110,31 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCartItem $request, $id)
     {
-        //
+        $cartItem = CartItem::findOrFail($id)->load('product');
+        $shoppingSession = $cartItem->shoppingSession;
+
+        $oldQuantity = $cartItem->quantity;
+        $newQuantity = $request->quantity;
+        DB::beginTransaction();
+        try {
+            $total = $shoppingSession->total + ($newQuantity - $oldQuantity) * $cartItem->product->price;
+            $shoppingSession->fill([
+                'total' => $total,
+            ])->save();
+            if ($newQuantity == 0) {
+                $cartItem->delete();
+            } else {
+                $cartItem->fill(['quantity' => $newQuantity])->save();
+            }
+            DB::commit();
+        }
+        catch(Throwable $e) {
+            DB::rollback();
+        }
+
+       return new CartResource($shoppingSession->load('cartItems','cartItems.product', 'cartItems.product.images'));
     }
 
     /**
@@ -124,6 +145,23 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        
+        $cartItem = CartItem::findOrFail($id)->load('product');
+        $shoppingSession = $cartItem->shoppingSession;
+
+        DB::beginTransaction();
+        try {
+            $total = $shoppingSession->total - ($cartItem->quantity * $cartItem->product->price);
+            $shoppingSession->fill([
+                'total' => $total,
+            ])->save();
+            $cartItem->delete();
+
+            DB::commit();
+        }
+        catch(Throwable $e) {
+            DB::rollback();
+        }
+
+       return new CartResource($shoppingSession->load('cartItems','cartItems.product', 'cartItems.product.images'));
     }
 }

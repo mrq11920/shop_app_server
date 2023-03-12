@@ -17,10 +17,13 @@ class ProductSeeder extends Seeder
     public function run()
     {
         // get all categories
-        $smallCategories = SmallCategory::all(['id', 'name']);
-        $mapCategories = [];
+        $smallCategories = SmallCategory::all(['id', 'name', 'large_category_id']);
+        $mapSmallCategories = ['name' => 'id'];
+        $mapLargeCategories = ['small_category_id' => 'large_category_id'];
+
         foreach ($smallCategories as $category) {
-            $mapCategories[strtolower($category->name)] = $category->id;
+            $mapSmallCategories[strtolower($category->name)] = $category->id;
+            $mapLargeCategories[$category->id] = $category->large_category_id;
         }
         // get all provinces
         $provinceMap = [];
@@ -41,9 +44,10 @@ class ProductSeeder extends Seeder
                         'id' => $data[0],
                         'merchant_id' => $data[10],
                         'name' => $data[1],
-                        'description' => $data[8],
+                        'description' => json_encode($data[8]),
                         'price' => $data[3],
-                        'category_id' => $mapCategories[strtolower($data[2])],
+                        'small_category_id' => $mapSmallCategories[strtolower($data[2])],
+                        'large_category_id' => $mapLargeCategories[$mapSmallCategories[strtolower($data[2])]],
                         'unit_type' => $data[4],
                         'quantity' => rand(5, 10),
                         'province_id' => $provinceMap[strtolower(trim(end($splitedAddress)))],

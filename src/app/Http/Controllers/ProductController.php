@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Image;
+use App\Models\LargeCategory;
 use App\Models\Product;
+use App\Models\Province;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,13 +15,24 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        $categories = Category::all();
+        $largeCategories = LargeCategory::all();
+        $provinces = Province::all();
+        $products = [];
+        $user = $request->user();
+        $query = Product::query();
+        $query = $query->orderBy('created_at', 'desc')->with(['largeCategory']);
+        if($user->isMerchant()) {
+            $query = $query->where('merchant_id', $user->id);
+        }
+        $products = $query->paginate(4);
+        
         return view('product.index', [
             'products' => $products,
-            'categories' => $categories,
+            'largeCategories' => $largeCategories,
+            'user' => $user,
+            'provinces' => $provinces,
         ]);
     }
 
@@ -41,13 +54,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // dd($request->all());
+        $product = Product::create([
+            'name' => $request->name,
+            'merchant_id' => $request->user()->id,
+            'small_category_id' => $request->large_category_id,
+            'large_category_id' => $request->large_category_id,
+            'description' => $request->description,
+            'unit_type' => $request->unit_type,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'province_id' => $request->province_id,
+            'status' => config('product.status.pending'),
+        ]);
         $path = '';
         if ($request->hasFile('image')) {
             $path = $request->image->store('images');
+            $image = Image::create([
+                'url' => $path,
+                'imageable_id' => $product->id,
+                'imageable_type' => Product::class,
+            ]);
         }
-        dd($path);
+        
+        return redirect()->back()->with("success", "Data has been saved successfully!");
     }
 
     /**
@@ -81,7 +110,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $params = $request->only('status');
+        if ($request->user()->isAdmin()) {
+            Product::where('id', $id)->update($params);
+            return redirect()->back()->with("success", "Product has been updated successfully!");
+        }
+        return redirect()->back();
     }
 
     /**

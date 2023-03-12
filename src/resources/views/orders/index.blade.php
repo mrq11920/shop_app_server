@@ -8,10 +8,10 @@
 
 @section('content')
 @if(Session::has('success'))
-<div class="alert alert-success" role="alert">
-    <strong>Successful:</strong>
-    {{ Session::get('success') }}
-</div>
+    <div class="alert alert-success" role= "alert">
+        <strong>Successful:</strong>
+            {{ Session::get('success') }} 
+    </div>
 @endif
 <section class="content">
     <div class="container-fluid">
@@ -21,7 +21,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-sm-10">
-                                <h3 class="card-title">All products</h3>
+                                <h3 class="card-title">All Orders</h3>
                             </div>
                             <div class="col-sm-2">
                                 <a href="#addProductModal" type="btn btn-success" data-toggle="modal" class="btn btn-block bg-gradient-success">Add</a>
@@ -41,15 +41,14 @@
                                         <thead>
                                             <tr class="d-flex">
                                                 <th class="sorting sorting_asc col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Id</th>
-                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Name</th>
-                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending">Category</th>
-                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending">Description</th>
-                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Image: activate to sort column ascending">Image</th>
-                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Unit type: activate to sort column ascending">Unit Type</th>
-                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending">Price</th>
+                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label=": activate to sort column ascending">Status</th>
+                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Category: activate to sort column ascending">Total</th>
+                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Description: activate to sort column ascending">User Id</th>
+                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Unit type: activate to sort column ascending">Products</th>
+                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Image: activate to sort column ascending">Address</th>
+                                                <!-- <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending">Price</th>
                                                 <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Quantity: activate to sort column ascending">Quantity</th>
-                                                <th class="sorting col-1" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
-                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Action</th>
+                                                <th class="sorting col-2" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -64,30 +63,7 @@
                                                 <td class="col-1">{{ $product->unit_type }}</td>
                                                 <td class="col-1">{{ $product->price }}</td>
                                                 <td class="col-1">{{ $product->quantity }}</td>
-                                                <td class="col-1">{{ config('product.status.' . $product->status) }}</td>
-                                                <td class="col-1">
-                                                    @if($user->isAdmin())
-                                                    <form method="post" action="{{ route('admin.products.update', $product->id)}}">
-                                                        @method('PUT')
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="{{config('product.status.approved')}}" />
-                                                        <button id='approve' type="submit" class="btn btn-success">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                    <form method="post" action="{{ route('admin.products.update', $product->id)}}">
-                                                        @method('PUT')
-                                                        @csrf
-                                                        <input type="hidden" name="status" value="{{config('product.status.declined')}}" />
-                                                        <button id='decline' type="submit" class="btn btn-danger">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                    @else
+                                                <td class="col-2">
                                                     <button type="button" class="btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
@@ -106,7 +82,6 @@
                                                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
                                                         </svg>
                                                     </button>
-                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -145,14 +120,6 @@
                         <select name="large_category_id" class="custom-select rounded-0" id="exampleSelectRounded0">
                             @foreach($largeCategories as $largeCategory)
                             <option value="{{ $largeCategory->id }}">{{ $largeCategory->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Province</label>
-                        <select name="province_id" class="custom-select rounded-0" id="exampleSelectRounded0">
-                            @foreach($provinces as $province)
-                            <option value="{{ $province->id }}">{{ $province->name }}</option>
                             @endforeach
                         </select>
                     </div>

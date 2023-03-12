@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\UserAddress;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AddressResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,10 @@ class AddressResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'name' => $this->name,
-            'address' => $this->address,
-            'phone_number' => $this->phone_number,
-            'province_id' => $this->province_id,
-            'province' => new ProvinceResource($this->whenLoaded('province')),
+            'email' => $this->email,
+            'role' => $this->role,
+            'profile' => new ProfileResource($this->whenLoaded('profile')),
+            'addresses' => UserAddressResource::collection($this->whenLoaded('addresses')),
         ];
     }
 }

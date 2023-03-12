@@ -33,7 +33,6 @@ class StoreOrderRequest extends FormRequest
                         ->where('total', '>', 0);
                 }),
             ],
-            'total_discount' => ['required', 'numeric'],
         ];
     }
 }

@@ -18,7 +18,8 @@ class Product extends Model
         'unit_type',
         'quantity',
         'discount_id',
-        'category_id',
+        'small_category_id',
+        'large_category_id',
         'province_id',
         'status',
         'created_at',
@@ -26,9 +27,14 @@ class Product extends Model
         'deleted_at',
     ];
 
-    public function category()
+    public function smallCategory()
     {
-        return $this->belongsTo(SmallCategory::class, 'category_id', 'id');
+        return $this->belongsTo(SmallCategory::class, 'small_category_id', 'id');
+    }
+
+    public function largeCategory()
+    {
+        return $this->belongsTo(LargeCategory::class, 'large_category_id', 'id');
     }
 
     public function images() 

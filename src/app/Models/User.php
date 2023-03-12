@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
+
+    public function isAdmin()
+    {
+        return $this->role == config('user.roles.admin');
+    }
+
+    public function isMerchant()
+    {
+        return $this->role == config('user.roles.merchant');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','guest']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'guest', 'logout']]);
     }
 
     public function register(Request $request)
@@ -29,7 +30,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
-            'full_name' => ['required'],
+            'full_name' => ['sometimes', 'string'],
         ]);
         // Return errors if validation error occur.
         if ($validator->fails()) {
@@ -44,7 +45,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
-            UserProfile::create(['user_id' => $user->id, 'full_name' => $request->full_name,]);
+            UserProfile::create(['user_id' => $user->id, 'full_name' => $request->full_name ?? 'user' . hash('crc32', $user->id),]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -54,8 +55,11 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => new UserResource($user->load('profile', 'addresses')),
+            ]
         ]);
     }
 
@@ -68,10 +72,13 @@ class AuthController extends Controller
         }
         $user = User::where('email', $request['email'])->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
-        return response()->json(['data' => [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]]);
+        return response()->json([
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'user' => new UserResource($user->load('profile', 'addresses')),
+            ]
+        ]);
     }
 
     public function completeProfile(Request $request)
@@ -94,5 +101,11 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
         ])->save();
+    }
+
+    public function logout(Request $request) 
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json();
     }
 }

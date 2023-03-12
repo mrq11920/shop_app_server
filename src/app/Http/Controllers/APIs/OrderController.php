@@ -23,7 +23,13 @@ class OrderController extends Controller
     {
         $userId = $request->user()->id;
         $orders = Order::where('user_id', $userId)->get();
-        return OrderResource::collection($orders->load('shoppingSession', 'userAddress'));
+        return OrderResource::collection($orders->load([
+            'shoppingSession', 
+            'shoppingSession.cartItems',
+            'shoppingSession.cartItems.product', 
+            'shoppingSession.cartItems.product.images',
+            'userAddress']
+        ));
     }
 
     /**
@@ -41,9 +47,19 @@ class OrderController extends Controller
                 'status' => Order::OPEN,
                 'shopping_session_id' => $shoppingSessionId,
                 'user_id' => $request->user()->id,
-                'total_discount' => $request->total_discount,
+                'total_discount' => 0,
                 'user_address_id' => $request->user_address_id,
             ]);
+
+            // update product quantity 
+            $shoppingSession = ShoppingSession::find($shoppingSessionId);
+            foreach($shoppingSession->cartItems as $cartItem) {
+                $product = $cartItem->product;
+                if ($product->quantity < $cartItem->quantity) {
+                    abort(400, 'Invalid order item');
+                }
+                $product->fill(['quantity' => $product->quantity - $cartItem->quantity])->save();
+            }
     
             // update current cart to invalid 
             ShoppingSession::where('id', $shoppingSessionId)->update(['valid' => false]);

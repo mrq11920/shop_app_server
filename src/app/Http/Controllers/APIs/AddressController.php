@@ -20,7 +20,7 @@ class AddressController extends Controller
     public function index(Request $request)
     {
         $addresses = $request->user()->addresses;
-        return AddressResource::collection($addresses);
+        return AddressResource::collection($addresses->load('province'));
     }
 
     /**
